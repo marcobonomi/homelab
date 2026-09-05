@@ -1,0 +1,43 @@
+{
+	"$schema": "https://raw.githubusercontent.com/devcontainers/spec/refs/heads/main/schemas/devContainer.schema.json",
+	"name": "homelab",
+	"build": {
+		"dockerfile": "Containerfile"
+	},
+	"remoteUser": "vscode",
+	"updateContentCommand": [
+		"uv",
+		"sync",
+		"--locked",
+		"--no-progress"
+	],
+	"remoteEnv": {
+		"PATH": "${containerWorkspaceFolder}/.venv/bin:${containerEnv:PATH}"
+	},
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"ansible.executionEnvironment.enabled": false,
+				"ansible.lightspeed.enabled": false,
+				"ansible.lightspeed.suggestions.enabled": false,
+				"ansible.mcpServer.enabled": false,
+				"extensions.autoCheckUpdates": false,
+				"extensions.autoUpdate": false,
+				"extensions.verifySignature": true,
+				"files.eol": "\n",
+				"redhat.telemetry.enabled": false,
+				"telemetry.telemetryLevel": "off",
+				"terminal.integrated.defaultProfile.linux": "bash"
+			},
+			"extensions": [
+				"ms-python.debugpy@2026.6.0",
+				"ms-python.python@2026.4.0",
+				"ms-python.vscode-pylance@2026.3.1",
+				"ms-python.vscode-python-envs@1.36.0",
+				"opentofu.vscode-opentofu@0.6.3",
+				"redhat.ansible@26.8.2",
+				"redhat.vscode-yaml@1.25.2026082008"
+			]
+		}
+	}
+}

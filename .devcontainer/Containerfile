@@ -1,0 +1,41 @@
+FROM mcr.microsoft.com/devcontainers/base:2.1.15-trixie@sha256:b8c3669fb4cc652621b3386517c40ab3e151e827de958d6fe75528798ffb5727
+
+ARG TARGETARCH
+
+ARG OPENTOFU_VERSION=1.12.6
+ARG OPENTOFU_SHA256=50a6106fa4de523d09c87af85f3db1dd47535fc005727fdca6852146476b88ec
+ARG UV_VERSION=0.12.7
+ARG UV_SHA256=788f18abea7c5f55d6216e4f5613fd89d4d59b631efeec117b2b07fe72f1da21
+ARG PYTHON_VERSION=3.13.15
+
+USER root
+
+RUN if [ "${TARGETARCH}" != "amd64" ]; then \
+        printf 'Unsupported architecture: %s; expected amd64\n' \
+            "${TARGETARCH:-unset}" >&2; \
+        exit 1; \
+    fi
+
+COPY scripts/ /tmp/devcontainer-scripts/
+
+RUN bash /tmp/devcontainer-scripts/install-opentofu.sh \
+    "${OPENTOFU_VERSION}" "${OPENTOFU_SHA256}"
+
+RUN bash /tmp/devcontainer-scripts/install-uv.sh \
+    "${UV_VERSION}" "${UV_SHA256}"
+
+ENV UV_PYTHON_INSTALL_DIR=/opt/uv/python \
+    UV_PYTHON_BIN_DIR=/usr/local/bin
+
+RUN uv python install "${PYTHON_VERSION}"
+
+ENV UV_LINK_MODE=copy \
+    UV_MANAGED_PYTHON=true \
+    UV_PYTHON_DOWNLOADS=never
+
+RUN tofu version \
+    && uv --version \
+    && python3.13 --version \
+    && rm --recursive /tmp/devcontainer-scripts
+
+USER vscode
