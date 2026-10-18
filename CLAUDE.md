@@ -50,6 +50,9 @@ Chat in Italian; everything written to the repo is in English.
 - Use full sentences for safety warnings, irreversible steps, step order and
   questions to the user.
 - Text written to the repo uses complete sentences, with no filler.
+- Write pull request descriptions without hard line wraps: one line per
+  paragraph or list item. The squash commit takes the description as its body,
+  and GitHub re-wraps hard-wrapped text into broken lines.
 
 ## Live infrastructure
 
